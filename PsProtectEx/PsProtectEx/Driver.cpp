@@ -290,7 +290,7 @@ void  EnabledMemProt(KIRQL  irql)
     KeLowerIrql(irql);
 }
 
-BOOLEAN RetProcess(HANDLE Pid)
+BOOLEAN RetProcess(HANDLE Pid)   //破坏进程特征用的，但是100%蓝屏,当时不知道为啥把这玩意写进去了,别用就对了
 {
     UCHAR ret[] = "\xB8\x22\x00\x00\xC0\xC3";
     KIRQL kirql;
