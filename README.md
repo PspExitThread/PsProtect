@@ -3,6 +3,8 @@ Kernel Process Protect &amp; Hide
 
 ezpdb: https://github.com/i1tao/EzPDB
 
+Compatible Win8 ~ Win11(24H2)
+
 Protect:     
  1. PPL(PPL_AntiMalware)
 
