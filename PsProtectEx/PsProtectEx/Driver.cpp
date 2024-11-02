@@ -270,34 +270,13 @@ NTSTATUS ApcQueueable(ULONG pid)
     }
     return STATUS_SUCCESS;
 }
-
-KIRQL  DisabledMemProt()
-{
-    KIRQL  irql = KeRaiseIrqlToDpcLevel();
-    UINT64  cr0 = __readcr0();
-    cr0 &= 0xfffffffffffeffff;
-    _disable();
-    __writecr0(cr0);
-    return  irql;
-}
-
-void  EnabledMemProt(KIRQL  irql)
-{
-    UINT64  cr0 = __readcr0();
-    cr0 |= 0x10000;
-    _enable();
-    __writecr0(cr0);
-    KeLowerIrql(irql);
-}
+
 
 BOOLEAN RetProcess(HANDLE Pid)   //破坏进程特征用的，但是100%蓝屏,当时不知道为啥把这玩意写进去了,别用就对了
 {
-    UCHAR ret[] = "\xB8\x22\x00\x00\xC0\xC3";
-    KIRQL kirql;
-    if (Pid == NULL) return FALSE;
-    kirql = DisabledMemProt();
-    memcpy(Pid, ret, sizeof(ret) / sizeof(ret[0]));
-    EnabledMemProt(kirql);
+    UCHAR ret[] = "\xB8\x22\x00\x00\xC0\xC3";
+    if (Pid == NULL) return FALSE;
+    memcpy(Pid, ret, sizeof(ret) / sizeof(ret[0]));
     return TRUE;
 }
 
