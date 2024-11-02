@@ -8,6 +8,6 @@ Protect:
 
  2. APC(Anti ZwTerminateProcess, ZeroProcessMemory, TerminateThread, SuspendThread……) (PatchGuard WARNING!)
 
- 3.Set System Critical Process      
+  3.Set System Critical Process      
 
- 4.Extract to SYSTEM
+  4.Extract to SYSTEM
