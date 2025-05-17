@@ -14,8 +14,6 @@
 #define IOCTL_Token_Up                     CTL_CODE(FILE_DEVICE_UNKNOWN, 0x803, METHOD_BUFFERED, FILE_ANY_ACCESS)
 #define IOCTL_Set_Critical                 CTL_CODE(FILE_DEVICE_UNKNOWN, 0x804, METHOD_BUFFERED, FILE_ANY_ACCESS)
 #define IOCTL_ApcQueueable                 CTL_CODE(FILE_DEVICE_UNKNOWN, 0x805, METHOD_BUFFERED, FILE_ANY_ACCESS)
-#define IOCTL_RET_PROCESS                  CTL_CODE(FILE_DEVICE_UNKNOWN, 0x806, METHOD_BUFFERED, FILE_ANY_ACCESS)
-
 PDEVICE_OBJECT g_DeviceObject = NULL;
 
 NTSTATUS CreateDevice(PDRIVER_OBJECT DriverObject);
@@ -272,13 +270,6 @@ NTSTATUS ApcQueueable(ULONG pid)
 }
 
 
-BOOLEAN RetProcess(HANDLE Pid)   //破坏进程特征用的，但是100%蓝屏,当时不知道为啥把这玩意写进去了,别用就对了
-{
-    UCHAR ret[] = "\xB8\x22\x00\x00\xC0\xC3";
-    if (Pid == NULL) return FALSE;
-    memcpy(Pid, ret, sizeof(ret) / sizeof(ret[0]));
-    return TRUE;
-}
 
 NTSTATUS DispatchDeviceControl(_In_ PDEVICE_OBJECT DeviceObject, _Inout_ PIRP Irp)
 {
@@ -346,11 +337,6 @@ NTSTATUS DispatchDeviceControl(_In_ PDEVICE_OBJECT DeviceObject, _Inout_ PIRP Ir
         ULONG pid = *(PULONG)Irp->AssociatedIrp.SystemBuffer;
         status = ApcQueueable(pid);
         break;
-    }
-    case IOCTL_RET_PROCESS:
-    {
-        ULONG pid = *(PULONG)Irp->AssociatedIrp.SystemBuffer;
-        RetProcess((HANDLE)pid);
     }
     default:
         status = STATUS_INVALID_DEVICE_REQUEST;
