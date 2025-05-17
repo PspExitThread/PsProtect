@@ -29,8 +29,6 @@
 #define IOCTL_Token_Up                     CTL_CODE(FILE_DEVICE_UNKNOWN, 0x803, METHOD_BUFFERED, FILE_ANY_ACCESS)
 #define IOCTL_Set_Critical                 CTL_CODE(FILE_DEVICE_UNKNOWN, 0x804, METHOD_BUFFERED, FILE_ANY_ACCESS)
 #define IOCTL_ApcQueueable                 CTL_CODE(FILE_DEVICE_UNKNOWN, 0x805, METHOD_BUFFERED, FILE_ANY_ACCESS)
-#define IOCTL_RET_PROCESS                  CTL_CODE(FILE_DEVICE_UNKNOWN, 0x806, METHOD_BUFFERED, FILE_ANY_ACCESS)
-
 LPCWSTR Title = L"MMSL";
 
 BOOL LoadDriver()
@@ -206,13 +204,5 @@ int main()
         printf("No Hide\n");
     }
 
-    LPCWSTR rmsg = L"whether to RetProcess (BSOD WARNING!!!)\n";
-    int r = MessageBoxW(NULL, rmsg, TEXT("Ret Process"), MB_YESNO | MB_ICONQUESTION);
-    if (r == IDYES) {
-        DeviceIoControl(hDevice, IOCTL_RET_PROCESS, &pid, sizeof(DWORD), NULL, 0, &bytesReturned, NULL);
-    }
-    else if (r == IDNO) {
-        printf("No RetProcess\n");
-    }
     CloseHandle(hDevice);
 }
